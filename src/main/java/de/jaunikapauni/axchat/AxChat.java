@@ -5,7 +5,9 @@ import de.jaunikapauni.axchat.manager.ChatManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AxChat extends JavaPlugin {
-    ChatManager chatManager;
+    private String host;
+    private int port;
+    private ChatManager chatManager;
     public ChatManager getChatManager(){
         return chatManager;
     }
@@ -14,8 +16,8 @@ public final class AxChat extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
-        String host = getConfig().getString("redis.host");
-        int port = getConfig().getInt("redis.port");
+        host = getConfig().getString("redis.host");
+        port = getConfig().getInt("redis.port");
         chatManager = new ChatManager(host, port);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         chatManager.subscribe("global_chat");

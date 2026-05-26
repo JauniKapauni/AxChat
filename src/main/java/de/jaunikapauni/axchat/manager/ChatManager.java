@@ -7,6 +7,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
 public class ChatManager {
+    private String host;
+    private int port;
     AxChat reference;
     public ChatManager(AxChat reference){
         this.reference = reference;
@@ -14,6 +16,8 @@ public class ChatManager {
 
     Jedis publisher;
     public ChatManager(String host, int port){
+        this.host = host;
+        this.port = port;
         publisher = new Jedis(host, port);
     }
     public void publishMessage(String channel, String message){
@@ -24,7 +28,7 @@ public class ChatManager {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try(Jedis subscriber = new Jedis(reference.getConfig().getString("redis.host"), reference.getConfig().getInt("redis.port"))){
+                try(Jedis subscriber = new Jedis(host, port)){
                     subscriber.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String message) {
