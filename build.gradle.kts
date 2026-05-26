@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    implementation("redis.clients:jedis:7.2.0")
 }
 
 java {
