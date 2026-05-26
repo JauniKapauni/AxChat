@@ -4,9 +4,15 @@ import de.jaunikapauni.axchat.command.MessageCommand;
 import de.jaunikapauni.axchat.command.ReloadCommand;
 import de.jaunikapauni.axchat.listener.ChatListener;
 import de.jaunikapauni.axchat.manager.ChatManager;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+
 public final class AxChat extends JavaPlugin {
+    private File langFile;
+    private FileConfiguration langConfig;
     private String host;
     private int port;
     private ChatManager chatManager;
@@ -18,6 +24,7 @@ public final class AxChat extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         saveDefaultConfig();
+        createLangFile();
         host = getConfig().getString("redis.host");
         port = getConfig().getInt("redis.port");
         chatManager = new ChatManager(host, port);
@@ -30,5 +37,17 @@ public final class AxChat extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    private void createLangFile(){
+        langFile = new File(getDataFolder(), "lang.yml");
+        if(!langFile.exists()){
+            saveResource("lang.yml", false);
+        }
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
+
+    public String getMessage(String path){
+        return langConfig.getString(path);
     }
 }

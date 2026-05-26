@@ -1,0 +1,4 @@
+chat:
+  prefix: "player"
+  separator: ":"
+  suffix: "message"

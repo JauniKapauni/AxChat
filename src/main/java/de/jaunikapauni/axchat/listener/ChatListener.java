@@ -29,8 +29,11 @@ public class ChatListener implements Listener {
             p.sendMessage("Your message was blocekd!");
             e.setCancelled(true);
         } else {
-            String msg = p.getName() + " : " + message;
-            reference.getChatManager().publishMessage("global_chat", msg);
+            String formatPlayer = reference.getMessage("chat.prefix");
+            String formatSeparator = reference.getMessage("chat.separator");
+            String formatMessage = reference.getMessage("chat.suffix");
+            String formattedMessage = formatPlayer.replace("player", p.getName() + " " + formatSeparator + " " + formatMessage.replace("message", message));
+            reference.getChatManager().publishMessage("global_chat", formattedMessage);
             e.setCancelled(true);
         }
     }
