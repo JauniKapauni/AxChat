@@ -41,4 +41,27 @@ public class ChatManager {
             }
         }).start();
     }
+
+    public void subscribePrivateMessages(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try(Jedis subscriber = new Jedis(host, port)){
+                    subscriber.subscribe(new JedisPubSub() {
+                        @Override
+                        public void onMessage(String channel, String message) {
+                            String[] messageParts = message.split(";");
+                            String sourcePlayer = messageParts[0];
+                            String targetName = messageParts[1];
+                            String msg = messageParts[2];
+                            Player targetPlayer = Bukkit.getPlayerExact(targetName);
+                            if(targetPlayer != null){
+                                targetPlayer.sendMessage(sourcePlayer + " - " + targetPlayer.getName() + " : " + msg);
+                            }
+                        }
+                    }, "private_messages");
+                }
+            }
+        }).start();
+    }
 }
