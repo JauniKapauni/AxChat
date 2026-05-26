@@ -1,3 +1,7 @@
 redis:
   host:
   port:
+forbidden-words:
+  - "badword1"
+  - "badword2"
+  - "badlink"

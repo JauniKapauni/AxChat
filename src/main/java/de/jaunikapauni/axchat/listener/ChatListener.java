@@ -6,14 +6,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import java.util.List;
+
 public class ChatListener implements Listener {
-    String[] forbiddenWords = {"badword1", "badword2", "badlink"};
     AxChat reference;
     public ChatListener(AxChat reference){
         this.reference = reference;
     }
     @EventHandler
     public void onChatMessage(PlayerChatEvent e){
+        List<String> forbiddenWords = reference.getConfig().getStringList("forbidden-words");
         String message = e.getMessage();
         Player p = e.getPlayer();
         boolean containsForbidden = false;
