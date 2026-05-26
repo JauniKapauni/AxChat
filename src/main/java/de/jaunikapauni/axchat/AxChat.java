@@ -13,7 +13,10 @@ public final class AxChat extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        chatManager = new ChatManager("localhost", 6379);
+        saveDefaultConfig();
+        String host = getConfig().getString("redis.host");
+        int port = getConfig().getInt("redis.port");
+        chatManager = new ChatManager(host, port);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         chatManager.subscribe("global_chat");
     }
