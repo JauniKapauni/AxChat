@@ -9,3 +9,6 @@ load: POSTWORLD
 
 authors: [JauniKapauni]
 website: https://github.com/JauniKapauni
+
+commands:
+  reload:

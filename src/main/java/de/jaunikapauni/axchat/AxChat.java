@@ -1,5 +1,6 @@
 package de.jaunikapauni.axchat;
 
+import de.jaunikapauni.axchat.command.ReloadCommand;
 import de.jaunikapauni.axchat.listener.ChatListener;
 import de.jaunikapauni.axchat.manager.ChatManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,7 @@ public final class AxChat extends JavaPlugin {
         chatManager = new ChatManager(host, port);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         chatManager.subscribe("global_chat");
+        getCommand("reload").setExecutor(new ReloadCommand(this));
     }
 
     @Override
