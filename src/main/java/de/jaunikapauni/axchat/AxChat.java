@@ -32,6 +32,7 @@ public final class AxChat extends JavaPlugin {
         chatManager = new ChatManager(host, port);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         chatManager.subscribe("global_chat");
+        chatManager.subscribePrivateMessages();
         getCommand("reload").setExecutor(new ReloadCommand(this));
         getCommand("msg").setExecutor(new MessageCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
