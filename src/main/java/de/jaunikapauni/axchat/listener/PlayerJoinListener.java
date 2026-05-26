@@ -19,8 +19,9 @@ public class PlayerJoinListener implements Listener {
         e.joinMessage(null);
         boolean joinMessageEnabled = reference.getConfig().getBoolean("join_message_enabled");
         if(joinMessageEnabled){
+            String joinMessage = reference.getConfig().getString("join_message");
             Player p = e.getPlayer();
-            Bukkit.broadcastMessage(ChatColor.GREEN + p.getName() + "is online!");
+            Bukkit.broadcastMessage(ChatColor.GREEN + p.getName() + joinMessage);
         }
     }
 }

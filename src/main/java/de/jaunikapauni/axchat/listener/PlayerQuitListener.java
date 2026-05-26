@@ -19,8 +19,9 @@ public class PlayerQuitListener implements Listener {
         e.quitMessage(null);
         boolean quitMessageEnabled = reference.getConfig().getBoolean("quit_message_enabled");
         if(quitMessageEnabled){
+            String quitMessage = reference.getConfig().getString("quit_message");
             Player p = e.getPlayer();
-            Bukkit.broadcastMessage(ChatColor.RED + p.getName() + "is offline!");
+            Bukkit.broadcastMessage(ChatColor.RED + p.getName() + quitMessage);
         }
     }
 }
