@@ -3,6 +3,8 @@ package de.jaunikapauni.axchat;
 import de.jaunikapauni.axchat.command.MessageCommand;
 import de.jaunikapauni.axchat.command.ReloadCommand;
 import de.jaunikapauni.axchat.listener.ChatListener;
+import de.jaunikapauni.axchat.listener.PlayerJoinListener;
+import de.jaunikapauni.axchat.listener.PlayerQuitListener;
 import de.jaunikapauni.axchat.manager.ChatManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,6 +34,8 @@ public final class AxChat extends JavaPlugin {
         chatManager.subscribe("global_chat");
         getCommand("reload").setExecutor(new ReloadCommand(this));
         getCommand("msg").setExecutor(new MessageCommand(this));
+        getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
     }
 
     @Override

@@ -5,3 +5,5 @@ forbidden-words:
   - "badword1"
   - "badword2"
   - "badlink"
+join_message_enabled: false
+quit_message_enabled: false
