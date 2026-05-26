@@ -1,0 +1,11 @@
+name: AxChat
+description: $description
+prefix: AxChat
+version: '${version}'
+
+main: de.jaunikapauni.axchat.AxChat
+api-version: '26.1.2'
+load: POSTWORLD
+
+authors: [JauniKapauni]
+website: https://github.com/JauniKapauni
