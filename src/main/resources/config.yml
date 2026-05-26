@@ -9,3 +9,4 @@ join_message_enabled: false
 quit_message_enabled: false
 join_message: "is online!"
 quit_message: "is offline!"
+chat_cooldown: 5000

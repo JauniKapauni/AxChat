@@ -8,6 +8,10 @@ import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 public class ChatManager {
     private String host;
     private int port;
@@ -17,6 +21,7 @@ public class ChatManager {
     }
 
     Jedis publisher;
+    Map<UUID, Long> lastMessageTime = new HashMap<>();
     public ChatManager(String host, int port){
         this.host = host;
         this.port = port;
@@ -66,5 +71,9 @@ public class ChatManager {
                 }
             }
         }).start();
+    }
+
+    public Map<UUID, Long> getLastMessageTime(){
+        return lastMessageTime;
     }
 }

@@ -15,6 +15,15 @@ public class ChatListener implements Listener {
     }
     @EventHandler
     public void onChatMessage(PlayerChatEvent e){
+        Long timestamp = reference.getChatManager().getLastMessageTime().get(e.getPlayer().getUniqueId());
+        if(timestamp != null && System.currentTimeMillis() - timestamp < reference.getConfig().getInt("chat_cooldown")){
+            Long remainingMillis = (reference.getConfig().getInt("chat_cooldown") - System.currentTimeMillis() - timestamp);
+            Long seconds = remainingMillis / 1000;
+            Long displaySeconds = seconds + 1;
+            e.getPlayer().sendMessage("Please wait another " + displaySeconds + " seconds before sending a new message!");
+            e.setCancelled(true);
+            return;
+        }
         List<String> forbiddenWords = reference.getConfig().getStringList("forbidden-words");
         String message = e.getMessage();
         Player p = e.getPlayer();
@@ -34,6 +43,7 @@ public class ChatListener implements Listener {
             String formatMessage = reference.getMessage("chat.suffix");
             String formattedMessage = formatPlayer.replace("player", p.getName() + " " + formatSeparator + " " + formatMessage.replace("message", message));
             reference.getChatManager().publishMessage("global_chat", formattedMessage);
+            reference.getChatManager().getLastMessageTime().put(p.getUniqueId(), System.currentTimeMillis());
             e.setCancelled(true);
         }
     }
