@@ -35,7 +35,7 @@ public class ChatListener implements Listener {
             }
         }
         if(containsForbidden){
-            p.sendMessage("Your message was blocekd!");
+            p.sendMessage("Your message was blocked!");
             e.setCancelled(true);
         } else {
             String formatPlayer = reference.getMessage("chat.prefix");
