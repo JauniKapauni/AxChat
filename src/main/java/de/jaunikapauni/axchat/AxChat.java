@@ -36,6 +36,8 @@ public final class AxChat extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        saveDefaultConfig();
+        createLangFile();
         try{
             databaseManager = new DatabaseManager(this);
             playerManager = new PlayerManager(this);
@@ -45,8 +47,6 @@ public final class AxChat extends JavaPlugin {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        saveDefaultConfig();
-        createLangFile();
         host = getConfig().getString("redis.host");
         port = getConfig().getInt("redis.port");
         chatManager = new ChatManager(host, port);
