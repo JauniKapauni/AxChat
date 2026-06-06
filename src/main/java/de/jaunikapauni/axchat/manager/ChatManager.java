@@ -15,6 +15,8 @@ import java.util.UUID;
 public class ChatManager {
     private String host;
     private int port;
+    private String username;
+    private String password;
     AxChat reference;
     public ChatManager(AxChat reference){
         this.reference = reference;
@@ -22,10 +24,13 @@ public class ChatManager {
 
     Jedis publisher;
     Map<UUID, Long> lastMessageTime = new HashMap<>();
-    public ChatManager(String host, int port){
+    public ChatManager(String host, int port, String username, String password){
         this.host = host;
         this.port = port;
+        this.username = username;
+        this.password = password;
         publisher = new Jedis(host, port);
+        publisher.auth(username, password);
     }
     public void publishMessage(String channel, String message){
         publisher.publish(channel, message);
