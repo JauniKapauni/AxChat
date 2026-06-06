@@ -41,6 +41,7 @@ public class ChatManager {
             @Override
             public void run() {
                 try(Jedis subscriber = new Jedis(host, port)){
+                    subscriber.auth(username, password);
                     subscriber.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String message) {
@@ -60,6 +61,7 @@ public class ChatManager {
             @Override
             public void run() {
                 try(Jedis subscriber = new Jedis(host, port)){
+                    subscriber.auth(username, password);
                     subscriber.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String message) {
