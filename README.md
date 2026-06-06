@@ -1,6 +1,12 @@
 # AxChat
 >Minecraft plugin to enable and manage cross-server chat
 ---
+## Requirements
+- Minecraft Paper 26.1.2 Server
+- MariaDB / MySQL Server
+- Redis Server
+- PlaceholderAPI
+---
 ## Features
 - Cross-server chat
   - Global
