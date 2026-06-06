@@ -22,12 +22,10 @@ public class PlayerManager {
     public List<String> getOnlinePlayers(){
         List<String> list = new ArrayList<>();
         try(Connection conn = reference.getDatabaseManager().getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM players WHERE online = TRUE")){
+            try(PreparedStatement ps = conn.prepareStatement("SELECT name FROM players WHERE online = TRUE")){
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()){
-                    String uuid = rs.getString("uuid");
-                    Player p = Bukkit.getPlayer(uuid);
-                    list.add(p.getName());
+                    list.add(rs.getString("name"));
                 }
             }
         } catch (SQLException e) {
@@ -36,11 +34,12 @@ public class PlayerManager {
         return list;
     }
 
-    public void updatePlayerStatus(UUID uuid, boolean online){
+    public void updatePlayerStatus(UUID uuid, String name, boolean online){
         try(Connection conn = reference.getDatabaseManager().getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("REPLACE players(uuid, online) VALUES (?, ?)")){
+            try(PreparedStatement ps = conn.prepareStatement("REPLACE players(uuid, name online) VALUES (?, ?, ?)")){
                 ps.setString(1, uuid.toString());
-                ps.setBoolean(2, online);
+                ps.setString(2, name);
+                ps.setBoolean(3, online);
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
