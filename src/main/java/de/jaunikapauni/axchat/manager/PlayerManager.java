@@ -36,7 +36,7 @@ public class PlayerManager {
 
     public void updatePlayerStatus(UUID uuid, String name, boolean online){
         try(Connection conn = reference.getDatabaseManager().getConnection()){
-            try(PreparedStatement ps = conn.prepareStatement("REPLACE players(uuid, name online) VALUES (?, ?, ?)")){
+            try(PreparedStatement ps = conn.prepareStatement("REPLACE players(uuid, name, online) VALUES (?, ?, ?)")){
                 ps.setString(1, uuid.toString());
                 ps.setString(2, name);
                 ps.setBoolean(3, online);
