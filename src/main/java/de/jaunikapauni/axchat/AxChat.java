@@ -1,12 +1,14 @@
 package de.jaunikapauni.axchat;
 
 import de.jaunikapauni.axchat.command.MessageCommand;
+import de.jaunikapauni.axchat.command.MessageTabCompleter;
 import de.jaunikapauni.axchat.command.ReloadCommand;
 import de.jaunikapauni.axchat.listener.ChatListener;
 import de.jaunikapauni.axchat.listener.PlayerJoinListener;
 import de.jaunikapauni.axchat.listener.PlayerQuitListener;
 import de.jaunikapauni.axchat.manager.ChatManager;
 import de.jaunikapauni.axchat.manager.DatabaseManager;
+import de.jaunikapauni.axchat.manager.PlayerManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,12 +28,17 @@ public final class AxChat extends JavaPlugin {
     public DatabaseManager getDatabaseManager(){
         return databaseManager;
     }
+    PlayerManager playerManager;
+    public PlayerManager getPlayerManager(){
+        return playerManager;
+    }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         try{
             databaseManager = new DatabaseManager(this);
+            playerManager = new PlayerManager(this);
             if(databaseManager.initDatabaseTable1() == false){
                 getLogger().severe("Failed to create db table");
             }
@@ -48,6 +55,7 @@ public final class AxChat extends JavaPlugin {
         chatManager.subscribePrivateMessages();
         getCommand("reload").setExecutor(new ReloadCommand(this));
         getCommand("msg").setExecutor(new MessageCommand(this));
+        getCommand("msg").setTabCompleter(new MessageTabCompleter(this));
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
     }
