@@ -14,6 +14,7 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     implementation("redis.clients:jedis:7.2.0")
     compileOnly("me.clip:placeholderapi:2.11.7")
+    implementation("com.zaxxer:HikariCP:7.0.2")
 }
 
 java {

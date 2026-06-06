@@ -10,3 +10,9 @@ quit_message_enabled: false
 join_message: "is online!"
 quit_message: "is offline!"
 chat_cooldown: 5000
+database:
+  host: localhost
+  port: 3306
+  database: axchat
+  username: root
+  password:
