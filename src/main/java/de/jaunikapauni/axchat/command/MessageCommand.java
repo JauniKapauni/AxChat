@@ -14,6 +14,10 @@ public class MessageCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        if(!(sender instanceof Player)){
+            sender.sendMessage("Only players can run this command!");
+            return true;
+        }
         Player p = (Player) sender;
         if(!p.hasPermission("axchat.msg")){
             p.sendMessage("You don't have the permission! [axchat.msg]");
@@ -29,10 +33,10 @@ public class MessageCommand implements CommandExecutor {
         }
         message = message.trim();
 
-        String redisData = sender.getName() + ";" + targetName + ";" + message;
+        String redisData = p.getName() + ";" + targetName + ";" + message;
         reference.getChatManager().publishMessage("private_messages", redisData);
 
-        sender.sendMessage(sender.getName() + " - " + targetName + " : " + message);
+        p.sendMessage(p.getName() + " - " + targetName + " : " + message);
         return true;
     }
 }
