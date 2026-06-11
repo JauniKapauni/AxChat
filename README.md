@@ -38,6 +38,10 @@ quit_message: "is offline!"
 chat_cooldown: 5000
 ```
 ---
+## Commands & Permissions
+- `/msg` - `axchat.msg`
+- `/reload` - `axchat.reload`
+---
 ## Support
 Discord: [AxForge](https://discord.gg/rYSxV4daS8)
 ---
