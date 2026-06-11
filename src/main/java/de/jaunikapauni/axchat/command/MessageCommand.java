@@ -4,6 +4,7 @@ import de.jaunikapauni.axchat.AxChat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class MessageCommand implements CommandExecutor {
@@ -13,6 +14,11 @@ public class MessageCommand implements CommandExecutor {
     }
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+        Player p = (Player) sender;
+        if(!p.hasPermission("axchat.msg")){
+            p.sendMessage("You don't have the permission! [axchat.msg]");
+            return true;
+        }
         if(args.length < 2){
             return false;
         }
