@@ -44,6 +44,7 @@ chat_cooldown: 5000
 ---
 ## Support
 Discord: [AxForge](https://discord.gg/rYSxV4daS8)
+
 ---
 ## License
 AxChat is licensed under the permissive MIT License. Please see [LICENSE](https://github.com/JauniKapauni/AxChat/blob/master/LICENSE) for more info.
