@@ -51,4 +51,15 @@ public class DatabaseManager {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean initDatabaseTable2(){
+        try(Connection conn = getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS mails(id INT AUTO_INCREMENT PRIMARY KEY, sender_uuid VARCHAR(36), receiver_uuid VARCHAR(36), content TEXT NOT NULL, is_read BOOLEAN DEFAULT FALSE, sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")){
+                ps.executeUpdate();
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

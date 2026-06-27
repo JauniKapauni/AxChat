@@ -46,4 +46,47 @@ public class PlayerManager {
             throw new RuntimeException(e);
         }
     }
+
+    public void sendMail(UUID sender, UUID receiver, String message){
+        try(Connection conn = reference.getDatabaseManager().getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement("INSERT INTO mails(sender_uuid, receiver_uuid, content) VALUES (?, ?, ?)")){
+                ps.setString(1, sender.toString());
+                ps.setString(2, receiver.toString());
+                ps.setString(3, message);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void clearMail(UUID receiver){
+        try(Connection conn = reference.getDatabaseManager().getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement("DELETE FROM mails WHERE receiver_uuid = ?")){
+                ps.setString(1, receiver.toString());
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<String> readMail(UUID receiver){
+        List<String> mails = new ArrayList<>();
+        try(Connection conn = reference.getDatabaseManager().getConnection()){
+            try(PreparedStatement ps = conn.prepareStatement("SELECT sender_uuid, content FROM mails WHERE receiver_uuid = ?")){
+                ps.setString(1, receiver.toString());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()){
+                    String senderUUID = rs.getString("sender_uuid");
+                    String content = rs.getString("content");
+                    OfflinePlayer sender = Bukkit.getOfflinePlayer(UUID.fromString(senderUUID));
+                    mails.add(sender.getName() + ": " + content);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return mails;
+    }
 }

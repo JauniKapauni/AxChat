@@ -1,5 +1,6 @@
 package de.jaunikapauni.axchat;
 
+import de.jaunikapauni.axchat.command.MailCommand;
 import de.jaunikapauni.axchat.command.MessageCommand;
 import de.jaunikapauni.axchat.command.MessageTabCompleter;
 import de.jaunikapauni.axchat.command.ReloadCommand;
@@ -43,7 +44,7 @@ public final class AxChat extends JavaPlugin {
         try{
             databaseManager = new DatabaseManager(this);
             playerManager = new PlayerManager(this);
-            if(databaseManager.initDatabaseTable1() == false){
+            if(databaseManager.initDatabaseTable1() && databaseManager.initDatabaseTable2() == false){
                 getLogger().severe("Failed to create db table");
             }
         } catch (Exception e) {
@@ -60,6 +61,7 @@ public final class AxChat extends JavaPlugin {
         getCommand("reload").setExecutor(new ReloadCommand(this));
         getCommand("msg").setExecutor(new MessageCommand(this));
         getCommand("msg").setTabCompleter(new MessageTabCompleter(this));
+        getCommand("mail").setExecutor(new MailCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new PlayerQuitListener(this), this);
         getLogger().info("");

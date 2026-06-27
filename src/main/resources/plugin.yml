@@ -13,6 +13,7 @@ website: https://github.com/JauniKapauni
 commands:
   reload:
   msg:
+  mail:
 
 softdepend:
   - PlaceholderAPI
