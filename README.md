@@ -41,6 +41,7 @@ chat_cooldown: 5000
 ## Commands & Permissions
 - `/msg` - `axchat.msg`
 - `/reload` - `axchat.reload`
+- `/mail` - `axchat.mail`
 ---
 ## Support
 Discord: [AxForge](https://discord.gg/rYSxV4daS8)
