@@ -47,7 +47,7 @@ public class ChatManager {
                         @Override
                         public void onMessage(String channel, String message) {
                             for(Player p : Bukkit.getOnlinePlayers()){
-                                String parsed = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(p, message));
+                                String parsed = ChatColor.translateAlternateColorCodes('&', message);
                                 p.sendMessage(parsed);
                             }
                         }

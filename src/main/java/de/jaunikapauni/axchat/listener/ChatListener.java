@@ -1,6 +1,7 @@
 package de.jaunikapauni.axchat.listener;
 
 import de.jaunikapauni.axchat.AxChat;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,12 +44,17 @@ public class ChatListener implements Listener {
             p.sendMessage("Your message was blocked!");
             e.setCancelled(true);
         } else {
-            String prefix = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.prefix"));
-            String separator = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.separator"));
-            String suffix = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.suffix"));
-            String coloredMessage = ChatColor.translateAlternateColorCodes('&', message);
+            String prefix = reference.getMessage("chat.prefix");
+            prefix = ChatColor.translateAlternateColorCodes('&', prefix);
 
-            String formattedMessage = prefix.replace("player", p.getName()) + " " + separator + " " + suffix.replace("message", coloredMessage);
+            String separator = reference.getMessage("chat.separator");
+            separator = ChatColor.translateAlternateColorCodes('&', separator);
+
+            String suffix = reference.getMessage("chat.suffix");
+            suffix = ChatColor.translateAlternateColorCodes('&', suffix);
+
+            String formattedMessage = prefix.replace("player", p.getName()) + " " + separator + " " + suffix.replace("message", message);
+            formattedMessage = PlaceholderAPI.setPlaceholders(p, formattedMessage);
             reference.getChatManager().publishMessage("global_chat", formattedMessage);
             reference.getChatManager().getLastMessageTime().put(p.getUniqueId(), System.currentTimeMillis());
             e.setCancelled(true);
