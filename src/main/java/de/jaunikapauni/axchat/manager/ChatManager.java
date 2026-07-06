@@ -4,6 +4,7 @@ import de.jaunikapauni.axchat.AxChat;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
@@ -46,7 +47,7 @@ public class ChatManager {
                         @Override
                         public void onMessage(String channel, String message) {
                             for(Player p : Bukkit.getOnlinePlayers()){
-                                String parsed = PlaceholderAPI.setPlaceholders(p, message);
+                                String parsed = ChatColor.translateAlternateColorCodes('&', PlaceholderAPI.setPlaceholders(p, message));
                                 p.sendMessage(parsed);
                             }
                         }
