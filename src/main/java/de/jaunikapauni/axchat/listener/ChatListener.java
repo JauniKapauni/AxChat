@@ -1,6 +1,7 @@
 package de.jaunikapauni.axchat.listener;
 
 import de.jaunikapauni.axchat.AxChat;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,10 +43,12 @@ public class ChatListener implements Listener {
             p.sendMessage("Your message was blocked!");
             e.setCancelled(true);
         } else {
-            String formatPlayer = reference.getMessage("chat.prefix");
-            String formatSeparator = reference.getMessage("chat.separator");
-            String formatMessage = reference.getMessage("chat.suffix");
-            String formattedMessage = formatPlayer.replace("player", p.getName() + " " + formatSeparator + " " + formatMessage.replace("message", message));
+            String prefix = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.prefix"));
+            String separator = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.separator"));
+            String suffix = ChatColor.translateAlternateColorCodes('&', reference.getMessage("chat.suffix"));
+            String coloredMessage = ChatColor.translateAlternateColorCodes('&', message);
+
+            String formattedMessage = prefix.replace("player", p.getName()) + " " + separator + " " + suffix.replace("message", coloredMessage);
             reference.getChatManager().publishMessage("global_chat", formattedMessage);
             reference.getChatManager().getLastMessageTime().put(p.getUniqueId(), System.currentTimeMillis());
             e.setCancelled(true);
