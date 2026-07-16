@@ -28,6 +28,9 @@ public class MailCommand implements CommandExecutor {
             p.sendMessage("You don't have the permission! [axchat.mail]");
             return true;
         }
+        if(args.length == 0){
+            return false;
+        }
         switch(args[0].toLowerCase()){
             case "send":
                 UUID senderUUID = p.getUniqueId();
