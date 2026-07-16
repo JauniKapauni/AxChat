@@ -88,4 +88,10 @@ public class ChatManager {
     public Map<UUID, Long> getLastMessageTime(){
         return lastMessageTime;
     }
+
+    public void close(){
+        if(publisher != null){
+            publisher.close();
+        }
+    }
 }

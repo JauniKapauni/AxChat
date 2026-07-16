@@ -77,6 +77,7 @@ public final class AxChat extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         databaseManager.close();
+        chatManager.close();
     }
 
     private void createLangFile(){
