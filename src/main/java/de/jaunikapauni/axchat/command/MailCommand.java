@@ -33,6 +33,9 @@ public class MailCommand implements CommandExecutor {
         }
         switch(args[0].toLowerCase()){
             case "send":
+                if(args.length < 3){
+                    return false;
+                }
                 UUID senderUUID = p.getUniqueId();
                 String msg = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(args[1]);
