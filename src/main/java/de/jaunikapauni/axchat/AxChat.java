@@ -44,7 +44,7 @@ public final class AxChat extends JavaPlugin {
         try{
             databaseManager = new DatabaseManager(this);
             playerManager = new PlayerManager(this);
-            if(databaseManager.initDatabaseTable1() && databaseManager.initDatabaseTable2() == false){
+            if(!databaseManager.initDatabaseTable1() || !databaseManager.initDatabaseTable2()){
                 getLogger().severe("Failed to create db table");
             }
         } catch (Exception e) {
