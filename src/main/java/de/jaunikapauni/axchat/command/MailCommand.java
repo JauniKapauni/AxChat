@@ -47,11 +47,13 @@ public class MailCommand implements CommandExecutor {
                 Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
                     reference.getPlayerManager().sendMail(senderUUID, receiverUUID, msg);
                 });
+                p.sendMessage("Mail sent.");
                 break;
             case "clear":
                 Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
                     reference.getPlayerManager().clearMail(p.getUniqueId());
                 });
+                p.sendMessage("Your mailbox was cleared.");
                 break;
             case "read":
                 Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
