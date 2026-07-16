@@ -12,6 +12,7 @@
   - Global
   - Private
 - Customize Join/Quit Message
+- Mail system
 ---
 ## Installation
 1. Download the latest release
