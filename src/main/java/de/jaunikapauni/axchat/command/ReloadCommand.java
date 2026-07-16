@@ -19,7 +19,7 @@ public class ReloadCommand implements CommandExecutor {
             return true;
         }
         Player p = (Player) sender;
-        if(!p.hasPermission("axchat.msg")){
+        if(!p.hasPermission("axchat.reload")){
             p.sendMessage("You don't have the permission! [axchat.reload]");
             return true;
         }
