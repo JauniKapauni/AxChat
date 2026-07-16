@@ -39,6 +39,10 @@ public class MailCommand implements CommandExecutor {
                 UUID senderUUID = p.getUniqueId();
                 String msg = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
                 OfflinePlayer receiver = Bukkit.getOfflinePlayer(args[1]);
+                if(!receiver.hasPlayedBefore() && !receiver.isOnline()){
+                    p.sendMessage("Unkown player.");
+                    return true;
+                }
                 UUID receiverUUID = receiver.getUniqueId();
                 reference.getPlayerManager().sendMail(senderUUID, receiverUUID, msg);
                 break;
