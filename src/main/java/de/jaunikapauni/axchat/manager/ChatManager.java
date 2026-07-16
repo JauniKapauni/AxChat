@@ -66,6 +66,9 @@ public class ChatManager {
                     subscriber.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String message) {
+                            if(message.length() < 3){
+                                return;
+                            }
                             String[] messageParts = message.split(";", 3);
                             String sourcePlayer = messageParts[0];
                             String targetName = messageParts[1];
