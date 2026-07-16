@@ -3,6 +3,7 @@ package de.jaunikapauni.axchat.listener;
 import de.jaunikapauni.axchat.AxChat;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,7 +33,7 @@ public class ChatListener implements Listener {
             }
         }
         List<String> forbiddenWords = reference.getConfig().getStringList("forbidden-words");
-        String message = String.valueOf(e.message());
+        String message = PlainTextComponentSerializer.plainText().serialize(e.message());
         Player p = e.getPlayer();
         boolean containsForbidden = false;
         for(String w : forbiddenWords){
