@@ -20,81 +20,75 @@ public class ChatManager {
     private String username;
     private String password;
     AxChat reference;
-    public ChatManager(AxChat reference){
-        this.reference = reference;
-    }
 
     Jedis publisher;
     Map<UUID, Long> lastMessageTime = new ConcurrentHashMap<>();
-    public ChatManager(String host, int port, String username, String password){
+
+    public ChatManager(String host, int port, String username, String password, AxChat reference) {
         this.host = host;
         this.port = port;
         this.username = username;
         this.password = password;
         publisher = new Jedis(host, port);
         publisher.auth(username, password);
+        this.reference = reference;
     }
-    public void publishMessage(String channel, String message){
+
+    public void publishMessage(String channel, String message) {
         publisher.publish(channel, message);
     }
 
-    public void subscribe(String channel){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try(Jedis subscriber = new Jedis(host, port)){
-                    subscriber.auth(username, password);
-                    subscriber.subscribe(new JedisPubSub() {
-                        @Override
-                        public void onMessage(String channel, String message) {
-                            Bukkit.getScheduler().runTask(reference, () -> {
-                                for(Player p : Bukkit.getOnlinePlayers()){
-                                    String parsed = ChatColor.translateAlternateColorCodes('&', message);
-                                    p.sendMessage(parsed);
-                                }
-                            });
-                        }
-                    }, channel);
-                }
-            }
-        }).start();
-    }
-
-    public void subscribePrivateMessages(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try(Jedis subscriber = new Jedis(host, port)){
-                    subscriber.auth(username, password);
-                    subscriber.subscribe(new JedisPubSub() {
-                        @Override
-                        public void onMessage(String channel, String message) {
-                            String[] messageParts = message.split(";", 3);
-                            if(messageParts.length < 3){
-                                return;
+    public void subscribe(String channel) {
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            try (Jedis subscriber = new Jedis(host, port)) {
+                subscriber.auth(username, password);
+                subscriber.subscribe(new JedisPubSub() {
+                    @Override
+                    public void onMessage(String channel, String message) {
+                        Bukkit.getScheduler().runTask(reference, () -> {
+                            for (Player p : Bukkit.getOnlinePlayers()) {
+                                String parsed = ChatColor.translateAlternateColorCodes('&', message);
+                                p.sendMessage(parsed);
                             }
-                            String sourcePlayer = messageParts[0];
-                            String targetName = messageParts[1];
-                            String msg = messageParts[2];
-                            Bukkit.getScheduler().runTask(reference, () -> {
-                                Player targetPlayer = Bukkit.getPlayerExact(targetName);
-                                if(targetPlayer != null){
-                                    targetPlayer.sendMessage(sourcePlayer + " - " + targetPlayer.getName() + " : " + msg);
-                                }
-                            });
-                        }
-                    }, "private_messages");
-                }
+                        });
+                    }
+                }, channel);
             }
-        }).start();
+        });
     }
 
-    public Map<UUID, Long> getLastMessageTime(){
+    public void subscribePrivateMessages() {
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            try (Jedis subscriber = new Jedis(host, port)) {
+                subscriber.auth(username, password);
+                subscriber.subscribe(new JedisPubSub() {
+                    @Override
+                    public void onMessage(String channel, String message) {
+                        String[] messageParts = message.split(";", 3);
+                        if (messageParts.length < 3) {
+                            return;
+                        }
+                        String sourcePlayer = messageParts[0];
+                        String targetName = messageParts[1];
+                        String msg = messageParts[2];
+                        Bukkit.getScheduler().runTask(reference, () -> {
+                            Player targetPlayer = Bukkit.getPlayerExact(targetName);
+                            if (targetPlayer != null) {
+                                targetPlayer.sendMessage(sourcePlayer + " - " + targetPlayer.getName() + " : " + msg);
+                            }
+                        });
+                    }
+                }, "private_messages");
+            }
+        });
+    }
+
+    public Map<UUID, Long> getLastMessageTime() {
         return lastMessageTime;
     }
 
-    public void close(){
-        if(publisher != null){
+    public void close() {
+        if (publisher != null) {
             publisher.close();
         }
     }

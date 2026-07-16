@@ -4,6 +4,7 @@ import de.jaunikapauni.axchat.AxChat;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,16 +15,18 @@ import java.util.List;
 
 public class ChatListener implements Listener {
     AxChat reference;
-    public ChatListener(AxChat reference){
+
+    public ChatListener(AxChat reference) {
         this.reference = reference;
     }
+
     @EventHandler
-    public void onChatMessage(AsyncChatEvent e){
+    public void onChatMessage(AsyncChatEvent e) {
         Long timestamp = reference.getChatManager().getLastMessageTime().get(e.getPlayer().getUniqueId());
         int cooldown = reference.getConfig().getInt("chat_cooldown");
-        if(timestamp != null){
+        if (timestamp != null) {
             long elapsed = System.currentTimeMillis() - timestamp;
-            if(elapsed < cooldown){
+            if (elapsed < cooldown) {
                 Long remainingMillis = cooldown - elapsed;
                 Long seconds = remainingMillis / 1000;
                 Long displaySeconds = seconds + 1;
@@ -36,13 +39,13 @@ public class ChatListener implements Listener {
         String message = PlainTextComponentSerializer.plainText().serialize(e.message());
         Player p = e.getPlayer();
         boolean containsForbidden = false;
-        for(String w : forbiddenWords){
-            if(message.toLowerCase().contains(w)){
+        for (String w : forbiddenWords) {
+            if (message.toLowerCase().contains(w)) {
                 containsForbidden = true;
                 break;
             }
         }
-        if(containsForbidden){
+        if (containsForbidden) {
             p.sendMessage("Your message was blocked!");
             e.setCancelled(true);
         } else {
@@ -57,7 +60,8 @@ public class ChatListener implements Listener {
 
             String formattedMessage = prefix.replace("player", p.getName()) + " " + separator + " " + suffix.replace("message", message);
             formattedMessage = PlaceholderAPI.setPlaceholders(p, formattedMessage);
-            reference.getChatManager().publishMessage("global_chat", formattedMessage);
+            String finalFormattedMessage = formattedMessage;
+            reference.getChatManager().publishMessage("global_chat", finalFormattedMessage);
             reference.getChatManager().getLastMessageTime().put(p.getUniqueId(), System.currentTimeMillis());
             e.setCancelled(true);
         }

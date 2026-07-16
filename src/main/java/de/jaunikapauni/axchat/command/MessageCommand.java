@@ -1,6 +1,7 @@
 package de.jaunikapauni.axchat.command;
 
 import de.jaunikapauni.axchat.AxChat;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,8 +39,9 @@ public class MessageCommand implements CommandExecutor {
         message = message.trim();
 
         String redisData = p.getName() + ";" + targetName + ";" + message;
-        reference.getChatManager().publishMessage("private_messages", redisData);
-
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            reference.getChatManager().publishMessage("private_messages", redisData);
+        });
         p.sendMessage(p.getName() + " - " + targetName + " : " + message);
         return true;
     }

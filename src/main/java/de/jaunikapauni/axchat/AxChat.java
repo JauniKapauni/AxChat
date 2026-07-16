@@ -54,7 +54,7 @@ public final class AxChat extends JavaPlugin {
         port = getConfig().getInt("redis.port");
         username = getConfig().getString("redis.username");
         password = getConfig().getString("redis.password");
-        chatManager = new ChatManager(host, port, username, password);
+        chatManager = new ChatManager(host, port, username, password, this);
         getServer().getPluginManager().registerEvents(new ChatListener(this), this);
         chatManager.subscribe("global_chat");
         chatManager.subscribePrivateMessages();
