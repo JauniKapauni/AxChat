@@ -44,20 +44,28 @@ public class MailCommand implements CommandExecutor {
                     return true;
                 }
                 UUID receiverUUID = receiver.getUniqueId();
-                reference.getPlayerManager().sendMail(senderUUID, receiverUUID, msg);
+                Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+                    reference.getPlayerManager().sendMail(senderUUID, receiverUUID, msg);
+                });
                 break;
             case "clear":
-                reference.getPlayerManager().clearMail(p.getUniqueId());
+                Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+                    reference.getPlayerManager().clearMail(p.getUniqueId());
+                });
                 break;
             case "read":
-                List<String> mails = reference.getPlayerManager().readMail(p.getUniqueId());
-                if(mails.isEmpty()){
-                    p.sendMessage("You have no mails!");
-                    return true;
-                }
-                for(String mail : mails){
-                    p.sendMessage(mail);
-                }
+                Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+                    List<String> mails = reference.getPlayerManager().readMail(p.getUniqueId());
+                    Bukkit.getScheduler().runTask(reference, () -> {
+                        if(mails.isEmpty()){
+                            p.sendMessage("You have no mails!");
+                            return;
+                        }
+                        for(String mail : mails){
+                            p.sendMessage(mail);
+                        }
+                    });
+                });
                 break;
             default:
                 p.sendMessage(ChatColor.RED + "Invalid command!");

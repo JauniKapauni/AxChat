@@ -47,10 +47,12 @@ public class ChatManager {
                     subscriber.subscribe(new JedisPubSub() {
                         @Override
                         public void onMessage(String channel, String message) {
-                            for(Player p : Bukkit.getOnlinePlayers()){
-                                String parsed = ChatColor.translateAlternateColorCodes('&', message);
-                                p.sendMessage(parsed);
-                            }
+                            Bukkit.getScheduler().runTask(reference, () -> {
+                                for(Player p : Bukkit.getOnlinePlayers()){
+                                    String parsed = ChatColor.translateAlternateColorCodes('&', message);
+                                    p.sendMessage(parsed);
+                                }
+                            });
                         }
                     }, channel);
                 }
@@ -74,10 +76,12 @@ public class ChatManager {
                             String sourcePlayer = messageParts[0];
                             String targetName = messageParts[1];
                             String msg = messageParts[2];
-                            Player targetPlayer = Bukkit.getPlayerExact(targetName);
-                            if(targetPlayer != null){
-                                targetPlayer.sendMessage(sourcePlayer + " - " + targetPlayer.getName() + " : " + msg);
-                            }
+                            Bukkit.getScheduler().runTask(reference, () -> {
+                                Player targetPlayer = Bukkit.getPlayerExact(targetName);
+                                if(targetPlayer != null){
+                                    targetPlayer.sendMessage(sourcePlayer + " - " + targetPlayer.getName() + " : " + msg);
+                                }
+                            });
                         }
                     }, "private_messages");
                 }

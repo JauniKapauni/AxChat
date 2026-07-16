@@ -23,6 +23,8 @@ public class PlayerJoinListener implements Listener {
             Player p = e.getPlayer();
             Bukkit.broadcastMessage(ChatColor.GREEN + p.getName() + joinMessage);
         }
-        reference.getPlayerManager().updatePlayerStatus(e.getPlayer().getUniqueId(), e.getPlayer().getName(), true);
+        Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+            reference.getPlayerManager().updatePlayerStatus(e.getPlayer().getUniqueId(), e.getPlayer().getName(), true);
+        });
     }
 }

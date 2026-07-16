@@ -1,6 +1,7 @@
 package de.jaunikapauni.axchat.command;
 
 import de.jaunikapauni.axchat.AxChat;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -20,11 +21,13 @@ public class MessageTabCompleter implements TabCompleter {
         List<String> list = new ArrayList<>();
         if(args.length == 1){
             String input = args[0].toLowerCase();
-            for(String name : reference.getPlayerManager().getOnlinePlayers()){
-                if(name.toLowerCase().startsWith(input)){
-                    list.add(name);
+            Bukkit.getScheduler().runTaskAsynchronously(reference, () -> {
+                for(String name : reference.getPlayerManager().getOnlinePlayers()){
+                    if(name.toLowerCase().startsWith(input)){
+                        list.add(name);
+                    }
                 }
-            }
+            });
         }
         return list;
     }
