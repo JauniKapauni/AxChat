@@ -1,6 +1,7 @@
 package de.jaunikapauni.axchat.listener;
 
 import de.jaunikapauni.axchat.AxChat;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ public class ChatListener implements Listener {
         this.reference = reference;
     }
     @EventHandler
-    public void onChatMessage(PlayerChatEvent e){
+    public void onChatMessage(AsyncChatEvent e){
         Long timestamp = reference.getChatManager().getLastMessageTime().get(e.getPlayer().getUniqueId());
         int cooldown = reference.getConfig().getInt("chat_cooldown");
         if(timestamp != null){
@@ -31,7 +32,7 @@ public class ChatListener implements Listener {
             }
         }
         List<String> forbiddenWords = reference.getConfig().getStringList("forbidden-words");
-        String message = e.getMessage();
+        String message = String.valueOf(e.message());
         Player p = e.getPlayer();
         boolean containsForbidden = false;
         for(String w : forbiddenWords){
