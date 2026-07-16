@@ -27,6 +27,10 @@ public class MessageCommand implements CommandExecutor {
             return false;
         }
         String targetName = args[0];
+        if(targetName.equalsIgnoreCase(p.getName())){
+            p.sendMessage("You can't send messages to yourself.");
+            return true;
+        }
         String message = "";
         for(int i = 1; i < args.length; i++){
             message = message + args[i] + " ";
