@@ -12,6 +12,7 @@ import redis.clients.jedis.JedisPubSub;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ChatManager {
     private String host;
@@ -24,7 +25,7 @@ public class ChatManager {
     }
 
     Jedis publisher;
-    Map<UUID, Long> lastMessageTime = new HashMap<>();
+    Map<UUID, Long> lastMessageTime = new ConcurrentHashMap<>();
     public ChatManager(String host, int port, String username, String password){
         this.host = host;
         this.port = port;
